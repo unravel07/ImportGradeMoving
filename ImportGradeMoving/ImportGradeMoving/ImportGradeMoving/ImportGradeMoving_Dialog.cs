@@ -59,7 +59,7 @@ namespace ImportGradeMoving
                     rtbLogDataImportPreparing.Clear();
                     rtbLogDataImportPreparing.AppendText("ไม่สามารถเปลี่ยนเกรด ที่เป็นเกรดเดิมได้");
                 }
-                
+                //Test
 
             }
             catch (Exception ex)
