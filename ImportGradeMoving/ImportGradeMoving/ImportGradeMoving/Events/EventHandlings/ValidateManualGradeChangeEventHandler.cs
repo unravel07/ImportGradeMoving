@@ -1,10 +1,9 @@
-﻿using OmniWMS.Domain.AggregatesModels.Master;
+﻿using HttpFactory.Implementations;
+using OmniWMS.Domain.AggregatesModels.Master;
 using OmniWMS.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UtilityByWaii;
-using UtilityByWaii.Common;
 
 namespace ImportGradeMoving.Events.EventHandlings
 {
@@ -50,7 +49,8 @@ namespace ImportGradeMoving.Events.EventHandlings
                         _context.SaveChanges();
                         var masterRepo = new MasterRepository<WMSDB_PWBContext>(_context);
                         var affectRow = masterRepo.CallNonQueryStoreProcedure<object>(_setting.ProcedureName, null);
-                        var responseChangeGradeAPI = CallAPI<object, string>.PostAPI(null, _setting.UrlChangeGradeAPI);
+                        ClientCredentialHttpService HTTPService = new ClientCredentialHttpService();
+                        var responseChangeGradeAPI = HTTPService.SendHttpPost(_setting.UrlChangeGradeAPI, null);
                     }
                 }
                 return new List<ExwmsImportGradeMovingTemp>();
@@ -68,7 +68,23 @@ namespace ImportGradeMoving.Events.EventHandlings
                 List<ExwmsImportGradeMovingLog> importGradeMovingLogs = new List<ExwmsImportGradeMovingLog>();
                 foreach (var importGradeMovingTemp in importGradeMovingTemps)
                 {
-                    ExwmsImportGradeMovingLog importGradeMovingLog = Utility.Map<ExwmsImportGradeMovingTemp, ExwmsImportGradeMovingLog>(importGradeMovingTemp);
+                    ExwmsImportGradeMovingLog importGradeMovingLog = new ExwmsImportGradeMovingLog();
+                    importGradeMovingLog.ProductId = importGradeMovingTemp.ProductId;
+                    importGradeMovingLog.ProductName = importGradeMovingTemp.ProductName;
+                    importGradeMovingLog.GradeFrom = importGradeMovingTemp.GradeFrom;
+                    importGradeMovingLog.GradeTo = importGradeMovingTemp.GradeTo;
+                    importGradeMovingLog.FromAvailQty = importGradeMovingTemp.FromAvailQty;
+                    importGradeMovingLog.FromOnOrderQty = importGradeMovingTemp.FromOnOrderQty;
+                    importGradeMovingLog.ToAvailQty = importGradeMovingTemp.ToAvailQty;
+                    importGradeMovingLog.ToOnOrderQty = importGradeMovingTemp.ToOnOrderQty;
+                    importGradeMovingLog.FromTotalAvail = importGradeMovingTemp.FromTotalAvail;
+                    importGradeMovingLog.ToTotalAvail = importGradeMovingTemp.ToTotalAvail;
+                    importGradeMovingLog.MoveQty = importGradeMovingTemp.MoveQty;
+                    importGradeMovingLog.DocumentStatus = importGradeMovingTemp.DocumentStatus;
+                    importGradeMovingLog.StatusCode = importGradeMovingTemp.StatusCode;
+                    importGradeMovingLog.StatusDesc = importGradeMovingTemp.StatusDesc;
+                    importGradeMovingLog.BatchId = importGradeMovingTemp.BatchId;
+                    importGradeMovingLog.CreateBy = importGradeMovingTemp.CreateBy;
                     importGradeMovingLog.CreateDate = DateTime.Now;
                     importGradeMovingLog.UpdateBy = null;
                     importGradeMovingLog.UpdateDate = null;
@@ -89,18 +105,26 @@ namespace ImportGradeMoving.Events.EventHandlings
                 List<ExwmsGradeMovingRequest> gradeMovingRequests = new List<ExwmsGradeMovingRequest>();
                 foreach (var importGradeMovingTemp in importGradeMovingTemps)
                 {
-                    ExwmsGradeMovingRequest gradeMovingRequest = Utility.Map<ExwmsImportGradeMovingTemp, ExwmsGradeMovingRequest>(importGradeMovingTemp);
+                    ExwmsGradeMovingRequest gradeMovingRequest = new ExwmsGradeMovingRequest();
+                    gradeMovingRequest.ProductId = importGradeMovingTemp.ProductId;
+                    gradeMovingRequest.ProductName = importGradeMovingTemp.ProductName;
                     gradeMovingRequest.BatchIdIn = importGradeMovingTemp.BatchId;
                     gradeMovingRequest.CreateDate = DateTime.Now;
                     gradeMovingRequest.DocumentStatus = "0";
                     gradeMovingRequest.Zone = _setting.Zone;
                     gradeMovingRequest.OrderType = importGradeMovingTemp.GradeFrom == "A" ? _setting.OrderTypeA : _setting.OrderTypeSP ;
                     gradeMovingRequest.OrderTypeAgainst = importGradeMovingTemp.GradeTo == "A" ? _setting.OrderTypeA : _setting.OrderTypeSP;
-                    gradeMovingRequest.DocumentStatus = "0";
                     gradeMovingRequest.CreateBy = "ManualFromUpload";
                     gradeMovingRequest.MoveType = "ManualFromUpload";
+                    gradeMovingRequest.GradeFrom = importGradeMovingTemp.GradeFrom;
+                    gradeMovingRequest.GradeTo = importGradeMovingTemp.GradeTo;
+                    gradeMovingRequest.MovingRequestQty = importGradeMovingTemp.MoveQty;
+                    gradeMovingRequest.ActualRequestQty = null;
                     gradeMovingRequest.UpdateBy = null;
                     gradeMovingRequest.UpdateDate = null;
+                    gradeMovingRequest.StatusCode = null;
+                    gradeMovingRequest.StatusDesc = null;
+                    gradeMovingRequest.BatchIdOut = null;
                     gradeMovingRequests.Add(gradeMovingRequest);
                 }
                 _context.ExwmsGradeMovingRequest.AddRange(gradeMovingRequests);

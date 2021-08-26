@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HttpFactory\HttpFactory.csproj" />
     <ProjectReference Include="..\..\..\OmniWMS.Infrastructure\OmniWMS.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -335,7 +335,7 @@ namespace ImportGradeMoving
             rtbLogDataImportPreparing.Clear();
             try
             {
-                string batchId = DateTime.Now.ToString();
+                string batchId = DateTime.Now.ToString("yyyyMMddHHmmssff");
                 using (OpenFileDialog fileDialog = new OpenFileDialog())
                 {
                     fileDialog.InitialDirectory = @"D:\ExcelDocument"; // C:
@@ -350,11 +350,11 @@ namespace ImportGradeMoving
 
                     if (!string.IsNullOrEmpty(fileDialog.FileName))
                     {
-                        List<ShopeeImportManualTemplate> excelResults  = OfficeHelper.ReadExcel<ShopeeImportManualTemplate>(fileDialog.FileName);
+                        List<ShopeeImportManualTemplate> excelResults = OfficeHelper.ReadExcel<ShopeeImportManualTemplate>(fileDialog.FileName);
                         if (excelResults.Count != 0)
                         {
                             //เช็ค Product ซ้ำ
-                            var duplicateProducts = excelResults.GroupBy(by => by.product_id).Where(condition => condition.Key.Count() > 1).Select(selector => new { product_id = selector.Key, count_product = selector.Key.Count() }).ToList();
+                            var duplicateProducts = excelResults.GroupBy(by => by.product_id).Where(condition => condition.Count() > 1).Select(selector => new { product_id = selector.Key, count_product = selector.Count() }).ToList();
                             if (duplicateProducts.Count > 0)
                             {
                                 foreach (var duplicateProduct in duplicateProducts)
@@ -366,15 +366,21 @@ namespace ImportGradeMoving
                             }
 
                             //เช็คจำนวน Qty_move
-                            foreach (var excelResult in excelResults)
+                            var existQtyMoves = excelResults.Where(condition => condition.move_qty == null || condition.move_qty == 0).ToList();
+                            if (existQtyMoves.Count > 0)
                             {
-                                //excelResult.move_qty
+                                foreach (var existQtyMove in existQtyMoves)
+                                {
+                                    var errorText = $"ProductId : {existQtyMove.product_id} จำนวน QtyMove ไม่ถูกต้อง \n";
+                                    rtbLogDataImportPreparing.AppendText(errorText);
+                                }
+                                return;
                             }
-                            return;
 
                             // Save ลง table ImportGradeMovingTemp
-                            SaveImportGradeMovingTemp(excelResults);
+                            SaveImportGradeMovingTemp(excelResults, batchId);
 
+                            //Validate Step After Save ImportGradeMovingTemp
                             ValidateManualGradeChangeEventHandler handler = new ValidateManualGradeChangeEventHandler(_context, _setting);
                             var importGradeMovingTemps = handler.Handle(batchId);
                             if (importGradeMovingTemps.Count == 0)
@@ -457,11 +463,38 @@ namespace ImportGradeMoving
 
 
         #region Method
-        private void SaveImportGradeMovingTemp(List<ShopeeImportManualTemplate> excelResults)
+        private void SaveImportGradeMovingTemp(List<ShopeeImportManualTemplate> excelResults, string batchId)
         {
             try
             {
-
+                List<ExwmsImportGradeMovingTemp> importGradeMovingTemps = new List<ExwmsImportGradeMovingTemp>();
+                foreach (var excelResult in excelResults)
+                {
+                    ExwmsImportGradeMovingTemp importGradeMovingTemp = new ExwmsImportGradeMovingTemp()
+                    {
+                        ProductId = excelResult.product_id,
+                        ProductName = excelResult.product_name,
+                        GradeFrom = excelResult.grade_from,
+                        GradeTo = excelResult.grade_to,
+                        FromAvailQty = excelResult.from_avail_qty,
+                        FromOnOrderQty = excelResult.from_on_order_qty,
+                        ToAvailQty = excelResult.to_avail_qty,
+                        ToOnOrderQty = excelResult.to_on_order_qty,
+                        FromTotalAvail = excelResult.from_total_avail,
+                        ToTotalAvail = excelResult.to_total_avail,
+                        MoveQty = excelResult.move_qty,
+                        DocumentStatus = "0",
+                        BatchId = batchId,
+                        CreateDate = DateTime.Now,
+                        CreateBy = "importchangegrademanual"
+                    };
+                    importGradeMovingTemps.Add(importGradeMovingTemp);
+                }
+                _context.AddRange(importGradeMovingTemps);
+                if (_context.ChangeTracker.HasChanges())
+                {
+                    _context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
