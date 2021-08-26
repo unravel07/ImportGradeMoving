@@ -1,4 +1,6 @@
-﻿namespace ImportGradeMoving
+﻿using System.Drawing;
+
+namespace ImportGradeMoving
 {
     partial class ImportGradeMoving_Dialog
     {
@@ -61,6 +63,7 @@
             // 
             this.rtbLogDataImportPreparing.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbLogDataImportPreparing.ForeColor = System.Drawing.Color.Red;
             this.rtbLogDataImportPreparing.Location = new System.Drawing.Point(8, 113);
             this.rtbLogDataImportPreparing.Margin = new System.Windows.Forms.Padding(2);
             this.rtbLogDataImportPreparing.Name = "rtbLogDataImportPreparing";

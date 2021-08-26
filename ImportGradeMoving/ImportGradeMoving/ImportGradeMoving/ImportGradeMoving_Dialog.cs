@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OmniWMS.Infrastructure.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -153,7 +154,7 @@ namespace ImportGradeMoving
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             var selector = this.comboBox1.GetItemText(this.comboBox1.SelectedItem);
-            if (selector == "Grade AAA")
+            if (selector == "A")
             {
                 ItemStatus_Id = "A";
                 rtbLogDataImportPreparing.Clear();
@@ -170,12 +171,12 @@ namespace ImportGradeMoving
         }
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selector = this.comboBox1.GetItemText(this.comboBox1.SelectedItem);
-            if (selector == "Grade AAA")
+            var selector = this.comboBox3.GetItemText(this.comboBox3.SelectedItem);
+            if (selector == "A")
             {
                 ItemStatus_Id = "A";
                 rtbLogDataImportPreparing.Clear();
-                rtbLogDataImportPreparing.AppendText("select Grade AAA");
+                rtbLogDataImportPreparing.AppendText("GradeTo Grade AAA");
             }
             else if (selector == "SP")
             {
