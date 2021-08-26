@@ -1425,9 +1425,11 @@ namespace OmniWMS.Infrastructure.Models
 
             modelBuilder.Entity<ExwmsImportGradeMovingLog>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.No);
 
                 entity.ToTable("exwms_import_grade_moving_log");
+
+                entity.Property(e => e.No).HasColumnName("no");
 
                 entity.Property(e => e.BatchId)
                     .HasColumnName("batch_id")

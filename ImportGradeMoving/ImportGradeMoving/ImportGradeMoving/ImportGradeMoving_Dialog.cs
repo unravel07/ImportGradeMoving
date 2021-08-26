@@ -68,274 +68,13 @@ namespace ImportGradeMoving
                 rtbLogDataImportPreparing.AppendText("Error : " + ex.Message);
                 return;
             }
-
-            // check enable and version
-            //result dataRes = IsEnableToUse();
-            //if (!dataRes.isEnable)
-            //{
-            //    MessageBox.Show(dataRes.description);
-            //    return;
-            //}
-
-            //using (OpenFileDialog fileDialog = new OpenFileDialog())
-            //{
-            //    fileDialog.InitialDirectory = @"C:\";
-            //    fileDialog.RestoreDirectory = true;
-            //    fileDialog.Title = "Browse xlsx Files";
-            //    fileDialog.DefaultExt = "xlsx";
-            //    fileDialog.Filter = "xls files (*.xls)|*.xls|csv files (*.csv)|*.csv|xlsx files (*.xlsx)|*.xlsx";
-            //    fileDialog.FilterIndex = 0;
-            //    fileDialog.CheckFileExists = true;
-            //    fileDialog.CheckPathExists = true;
-
-            //    fileDialog.ShowDialog();
-
-            //    string fileName = fileDialog.FileName;
-
-            //    if (!string.IsNullOrEmpty(fileName))
-            //    {
-            //        try
-            //        {
-            //            DataTable dt = GetDataExcelToTable(fileName, "");
-            //            dataExcel = dt;
-
-            //            HashSet<string> planGoodsIssueProductStrings = new HashSet<string>(); //for sql query
-            //            HashSet<string> planGoodsIssueProducts = new HashSet<string>();
-            //            HashSet<string> planGoodsIssueOrderNoStrings = new HashSet<string>();//for sql query
-            //            HashSet<string> planGoodsReceiveProductStrings = new HashSet<string>(); //for sql query
-            //            HashSet<string> planGoodsReceiveProducts = new HashSet<string>();
-            //            HashSet<string> planGoodsReceiveOrderNoStrings = new HashSet<string>();
-            //            var importPlanGoodsIssueDict = new Dictionary<string, PlanGoodsIssueViewModel>();
-            //            var importPlanGoodsReceiveDict = new Dictionary<string, PlanGoodsReceiveViewModel>();
-            //            string documentId = string.Empty;
-            //            string documentName = string.Empty;
-            //            Guid documentIndex = new Guid();
-            //            bool isMissingRequiredFields = false;
-            //            bool isImportFail = false;
-            //            bool isDocumentTypeNotExist = false;
-            //            var documentTypes = GetDocumentTypes(new List<string>() { "RTW", "STS", "FN-007" });
-            //            foreach (var item in dataExcel.AsEnumerable())
-            //            {
-            //                string fromStore = item.Field<string>("FR_STR1");
-            //                string toStore = item.Field<string>("TO_STR3");
-            //                string toStoreName = item.Field<string>("TO_STRNAM4");
-            //                string productId = item.Field<string>("SKU17");
-            //                string orderNo = item.Field<string>("TRF_NUMBER5");
-            //                decimal qty = Convert.ToDecimal(item.Field<string>("RCV_QTY27"));
-
-            //                if (string.IsNullOrWhiteSpace(orderNo))
-            //                {
-            //                    isMissingRequiredFields = true;
-            //                    isImportFail = true;
-            //                    break;
-            //                }
-
-            //                //Case: PlangoodsIssue
-            //                if (fromStore.Equals(_b2sStoreId))
-            //                {
-            //                    planGoodsIssueProductStrings.Add($"'{productId}'");
-            //                    planGoodsIssueProducts.Add(productId);
-            //                    planGoodsIssueOrderNoStrings.Add($"'{orderNo}'");
-
-            //                    // Return to Warehouse
-            //                    if (toStore.Equals(_dcId))
-            //                    {
-            //                        var document = documentTypes.Where(x => x.DocumentTypeId.ToUpper().Equals("RTW")).FirstOrDefault();
-            //                        if (document == null)
-            //                        {
-            //                            isDocumentTypeNotExist = true;
-            //                            isImportFail = true;
-            //                            break;
-            //                        }
-
-            //                        documentId = document.DocumentTypeId;
-            //                        documentIndex = document.DocumentTypeIndex;
-            //                        documentName = document.DocumentTypeName;
-            //                    }
-            //                    // Store To Store
-            //                    else
-            //                    {
-            //                        var document = documentTypes.Where(x => x.DocumentTypeId.ToUpper().Equals("STS")).FirstOrDefault();
-            //                        if (document == null)
-            //                        {
-            //                            isDocumentTypeNotExist = true;
-            //                            isImportFail = true;
-            //                            break;
-            //                        }
-
-            //                        documentId = document.DocumentTypeId;
-            //                        documentIndex = document.DocumentTypeIndex;
-            //                        documentName = document.DocumentTypeName;
-            //                    }
-
-            //                    if (importPlanGoodsIssueDict.ContainsKey($"{toStore}_{orderNo}_{productId}"))
-            //                    {
-            //                        importPlanGoodsIssueDict[$"{toStore}_{orderNo}_{productId}"].Qty += qty;
-            //                    }
-            //                    else
-            //                    {
-            //                        importPlanGoodsIssueDict[$"{toStore}_{orderNo}_{productId}"] = new PlanGoodsIssueViewModel()
-            //                        {
-            //                            StoreId = toStore, // assign to Warehouse_To_Id
-            //                            StoreIdName = toStoreName,
-            //                            OrderNo = orderNo,
-            //                            ProductId = productId,
-            //                            DocumentTypeId = documentId,
-            //                            DocumentTypeIndex = documentIndex,
-            //                            DocumentTypeName = documentName,
-            //                            Qty = qty
-            //                        };
-            //                    }
-            //                }
-            //                //Case: PlanGoodsReceive
-            //                else if (toStore.Equals(_b2sStoreId))
-            //                {
-            //                    string vendorId = item.Field<string>("VENDOR10");
-            //                    //Transfer to DC
-            //                    if (fromStore.Equals(_dcId))
-            //                    {
-            //                        planGoodsReceiveProductStrings.Add($"'{productId}'");
-            //                        planGoodsReceiveProducts.Add(productId);
-            //                        planGoodsReceiveOrderNoStrings.Add($"'{orderNo}'");
-
-            //                        var document = documentTypes.Where(x => x.DocumentTypeId.ToUpper().Equals("FN-007")).FirstOrDefault();
-            //                        documentId = document.DocumentTypeId;
-            //                        documentIndex = document.DocumentTypeIndex;
-            //                        documentName = document.DocumentTypeName;
-            //                    }
-            //                    //Store To Store
-            //                    else
-            //                    {
-            //                        planGoodsReceiveProductStrings.Add($"'{productId}'");
-            //                        planGoodsReceiveProducts.Add(productId);
-            //                        planGoodsReceiveOrderNoStrings.Add($"'{orderNo}'");
-
-            //                        var document = documentTypes.Where(x => x.DocumentTypeId.ToUpper().Equals("STS")).FirstOrDefault();
-            //                        documentId = document.DocumentTypeId;
-            //                        documentIndex = document.DocumentTypeIndex;
-            //                        documentName = document.DocumentTypeName;
-            //                    }
-
-            //                    if (importPlanGoodsReceiveDict.ContainsKey($"{vendorId}_{orderNo}_{productId}"))
-            //                    {
-            //                        importPlanGoodsReceiveDict[$"{vendorId}_{orderNo}_{productId}"].Qty += qty;
-            //                    }
-            //                    else
-            //                    {
-            //                        importPlanGoodsReceiveDict[$"{vendorId}_{orderNo}_{productId}"] = new PlanGoodsReceiveViewModel()
-            //                        {
-            //                            VendorId = vendorId, // assign to Warehouse_To_Id
-            //                            OrderNo = orderNo,
-            //                            ProductId = productId,
-            //                            DocumentTypeId = documentId,
-            //                            DocumentTypeIndex = documentIndex,
-            //                            DocumentTypeName = documentName,
-            //                            Qty = qty
-            //                        };
-            //                    }
-            //                }
-            //            }
-
-            //            if (isImportFail == false &&
-            //                importPlanGoodsReceiveDict.Count <= 0 && importPlanGoodsIssueDict.Count <= 0)
-            //            {
-            //                rtbLogDataImportPreparing.ForeColor = Color.Black;
-            //                statusCanImport = false;
-            //                rtbLogDataImportPreparing.AppendText("Validate Success, No DocumentType qualify." + Environment.NewLine);
-            //                return;
-            //            }
-
-            //            // Validate Orders
-            //            string composedIssueOrderNos = string.Join(",", planGoodsIssueOrderNoStrings);
-            //            var invalidPlanGoodsIssueOrders = GetDataOrderForPlanGoodsIssue(composedIssueOrderNos).AsEnumerable()
-            //                                                .Select(row => row.Field<string>("PlanGoodsIssue_No")).ToList();
-
-            //            string composedRecieveOrderNos = string.Join(",", planGoodsReceiveOrderNoStrings);
-            //            var invalidPlanGoodsReceiveOrders = GetDataOrderForPlanGoodsReceive(composedRecieveOrderNos).AsEnumerable()
-            //                                                .Select(row => row.Field<string>("Plangoodsreceive_no")).ToList();
-
-            //            var totalInvalidOrders = invalidPlanGoodsIssueOrders.Union(invalidPlanGoodsReceiveOrders).Distinct().ToList();
-
-            //            // Validate Product
-            //            string composedIssueProductIds = string.Join(",", planGoodsIssueProductStrings);
-            //            _dtIssueProduct = GetDataProductForPlanGoodsIssue(composedIssueProductIds);
-            //            var validPlanGoodsIssueProducts = _dtIssueProduct.AsEnumerable().Select(row => row.Field<string>("productconversionbarcode")).ToList();
-            //            var invalidIssueProductIds = planGoodsIssueProducts.Except(validPlanGoodsIssueProducts).ToList();
-
-            //            string composedReceiveProductIds = string.Join(",", planGoodsReceiveProductStrings);
-            //            _dtReceiveProduct = GetDataProductForPlanGoodsReceive(composedReceiveProductIds);
-            //            var validPlanGoodsReceiveProducts = _dtReceiveProduct.AsEnumerable().Select(row => row.Field<string>("productconversionbarcode")).ToList();
-            //            var invalidReceiveProductIds = planGoodsReceiveProducts.Except(validPlanGoodsReceiveProducts).ToList();
-
-            //            var totalInvalidProductIds = invalidIssueProductIds.Union(invalidReceiveProductIds).Distinct().ToList();
-
-            //            rtbLogDataImportPreparing.Clear();
-
-            //            if (isMissingRequiredFields == true)
-            //            {
-            //                rtbLogDataImportPreparing.AppendText("Import Problems:\nThere are required fields missing." + Environment.NewLine);
-            //                rtbLogDataImportPreparing.ForeColor = Color.Red;
-            //                statusCanImport = false;
-            //                isImportFail = true;
-            //            }
-
-            //            if (isDocumentTypeNotExist == true)
-            //            {
-            //                rtbLogDataImportPreparing.AppendText("Order Problem Reports:There are invalid documentType." + Environment.NewLine);
-            //                rtbLogDataImportPreparing.ForeColor = Color.Red;
-            //                statusCanImport = false;
-            //                isImportFail = true;
-            //            }
-
-            //            if (totalInvalidOrders.Count() > 0)
-            //            {
-            //                rtbLogDataImportPreparing.AppendText("Order Problem Reports" + Environment.NewLine);
-            //                rtbLogDataImportPreparing.ForeColor = Color.Red;
-            //                totalInvalidOrders.ForEach(x => rtbLogDataImportPreparing.AppendText(x + " is processed" + Environment.NewLine));
-            //                statusCanImport = false;
-            //                isImportFail = true;
-            //            }
-
-            //            if (totalInvalidProductIds.Count() > 0)
-            //            {
-            //                rtbLogDataImportPreparing.AppendText(Environment.NewLine + "=========================" + Environment.NewLine);
-            //                rtbLogDataImportPreparing.AppendText("Product Problem Reports" + Environment.NewLine);
-            //                rtbLogDataImportPreparing.ForeColor = Color.Red;
-            //                totalInvalidProductIds.ForEach(x => rtbLogDataImportPreparing.AppendText(x + " not found" + Environment.NewLine));
-            //                statusCanImport = false;
-            //                isImportFail = true;
-            //            }
-
-            //            if (isImportFail == false)
-            //            {
-            //                importPlanGoodsIssues = importPlanGoodsIssueDict.Values.Select(x => x).ToList();
-            //                importPlanGoodsReceives = importPlanGoodsReceiveDict.Values.Select(x => x).ToList();
-
-            //                rtbLogDataImportPreparing.ForeColor = Color.Black;
-            //                statusCanImport = true;
-            //                rtbLogDataImportPreparing.AppendText("Validate Success Please press import button" + Environment.NewLine);
-            //            }
-            //            else
-            //            {
-            //                ClearImportItemsCatch();
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            //reset catch data
-            //            ClearImportItemsCatch();
-            //            MessageBox.Show("Error when getting data as follow : " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //            return;
-            //        }
-            //    }
-            //}
         }
         private void BtImportGrade_Click(object sender, EventArgs e)
         {
             rtbLogDataImportPreparing.Clear();
             try
             {
-                string batchId = DateTime.Now.ToString();
+                string batchId = DateTime.Now.ToString("yyyyMMddHHmmssff");
                 using (OpenFileDialog fileDialog = new OpenFileDialog())
                 {
                     fileDialog.InitialDirectory = @"D:\ExcelDocument"; // C:
@@ -350,11 +89,11 @@ namespace ImportGradeMoving
 
                     if (!string.IsNullOrEmpty(fileDialog.FileName))
                     {
-                        List<ShopeeImportManualTemplate> excelResults  = OfficeHelper.ReadExcel<ShopeeImportManualTemplate>(fileDialog.FileName);
+                        List<ShopeeImportManualTemplate> excelResults = OfficeHelper.ReadExcel<ShopeeImportManualTemplate>(fileDialog.FileName);
                         if (excelResults.Count != 0)
                         {
                             //เช็ค Product ซ้ำ
-                            var duplicateProducts = excelResults.GroupBy(by => by.product_id).Where(condition => condition.Key.Count() > 1).Select(selector => new { product_id = selector.Key, count_product = selector.Key.Count() }).ToList();
+                            var duplicateProducts = excelResults.GroupBy(by => by.product_id).Where(condition => condition.Count() > 1).Select(selector => new { product_id = selector.Key, count_product = selector.Count() }).ToList();
                             if (duplicateProducts.Count > 0)
                             {
                                 foreach (var duplicateProduct in duplicateProducts)
@@ -366,15 +105,21 @@ namespace ImportGradeMoving
                             }
 
                             //เช็คจำนวน Qty_move
-                            foreach (var excelResult in excelResults)
+                            var existQtyMoves = excelResults.Where(condition => condition.move_qty == null || condition.move_qty == 0).ToList();
+                            if (existQtyMoves.Count > 0)
                             {
-                                //excelResult.move_qty
+                                foreach (var existQtyMove in existQtyMoves)
+                                {
+                                    var errorText = $"ProductId : {existQtyMove.product_id} จำนวน QtyMove ไม่ถูกต้อง \n";
+                                    rtbLogDataImportPreparing.AppendText(errorText);
+                                }
+                                return;
                             }
-                            return;
 
                             // Save ลง table ImportGradeMovingTemp
-                            SaveImportGradeMovingTemp(excelResults);
+                            SaveImportGradeMovingTemp(excelResults, batchId);
 
+                            //Validate Step After Save ImportGradeMovingTemp
                             ValidateManualGradeChangeEventHandler handler = new ValidateManualGradeChangeEventHandler(_context, _setting);
                             var importGradeMovingTemps = handler.Handle(batchId);
                             if (importGradeMovingTemps.Count == 0)
@@ -457,11 +202,38 @@ namespace ImportGradeMoving
 
 
         #region Method
-        private void SaveImportGradeMovingTemp(List<ShopeeImportManualTemplate> excelResults)
+        private void SaveImportGradeMovingTemp(List<ShopeeImportManualTemplate> excelResults, string batchId)
         {
             try
             {
-
+                List<ExwmsImportGradeMovingTemp> importGradeMovingTemps = new List<ExwmsImportGradeMovingTemp>();
+                foreach (var excelResult in excelResults)
+                {
+                    ExwmsImportGradeMovingTemp importGradeMovingTemp = new ExwmsImportGradeMovingTemp()
+                    {
+                        ProductId = excelResult.product_id,
+                        ProductName = excelResult.product_name,
+                        GradeFrom = excelResult.grade_from,
+                        GradeTo = excelResult.grade_to,
+                        FromAvailQty = excelResult.from_avail_qty,
+                        FromOnOrderQty = excelResult.from_on_order_qty,
+                        ToAvailQty = excelResult.to_avail_qty,
+                        ToOnOrderQty = excelResult.to_on_order_qty,
+                        FromTotalAvail = excelResult.from_total_avail,
+                        ToTotalAvail = excelResult.to_total_avail,
+                        MoveQty = excelResult.move_qty,
+                        DocumentStatus = "0",
+                        BatchId = batchId,
+                        CreateDate = DateTime.Now,
+                        CreateBy = "importchangegrademanual"
+                    };
+                    importGradeMovingTemps.Add(importGradeMovingTemp);
+                }
+                _context.AddRange(importGradeMovingTemps);
+                if (_context.ChangeTracker.HasChanges())
+                {
+                    _context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {

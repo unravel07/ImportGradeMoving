@@ -13,3 +13,5 @@
 /Import_Transfer
 /OmniWMS.Infrastructure/bin/Debug/netcoreapp3.1
 /OmniWMS.Infrastructure/obj
+/HttpFactory/bin
+/HttpFactory/obj
