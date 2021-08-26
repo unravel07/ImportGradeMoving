@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace OmniWMS.Infrastructure.Models
+{
+    public partial class ViewConfirmGoodsIssue
+    {
+        public long? RowIndex { get; set; }
+        public Guid PlanGoodsIssueIndex { get; set; }
+        public Guid OwnerIndex { get; set; }
+        public string OwnerId { get; set; }
+        public string OwnerName { get; set; }
+        public Guid SoldToIndex { get; set; }
+        public string SoldToId { get; set; }
+        public string SoldToName { get; set; }
+        public Guid ShipToIndex { get; set; }
+        public string ShipToId { get; set; }
+        public string ShipToName { get; set; }
+        public Guid? DocumentTypeIndex { get; set; }
+        public string DocumentTypeId { get; set; }
+        public string DocumentTypeName { get; set; }
+        public string PlanGoodsIssueNo { get; set; }
+        public DateTime PlanGoodsIssueDate { get; set; }
+        public DateTime? PlanGoodsIssueDueDate { get; set; }
+        public Guid? RoundIndex { get; set; }
+        public string RoundId { get; set; }
+        public string RoundName { get; set; }
+        public Guid? RouteIndex { get; set; }
+        public string RouteId { get; set; }
+        public string RouteName { get; set; }
+        public Guid? WarehouseIndex { get; set; }
+        public string WarehouseId { get; set; }
+        public string WarehouseName { get; set; }
+        public Guid? WarehouseIndexTo { get; set; }
+        public string WarehouseIdTo { get; set; }
+        public string WarehouseNameTo { get; set; }
+        public Guid PlanGoodsIssueItemIndex { get; set; }
+        public Guid? ProductIndex { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string ProductSecondName { get; set; }
+        public string ProductThirdName { get; set; }
+        public Guid? ItemStatusIndex { get; set; }
+        public string ItemStatusId { get; set; }
+        public string ItemStatusName { get; set; }
+        public int? BackOrderStatus { get; set; }
+        public decimal? QtyBackOrder { get; set; }
+        public decimal? PlanQty { get; set; }
+        public decimal? PlanRatio { get; set; }
+        public decimal? PlanTotalQty { get; set; }
+        public Guid? PlanProductConversionIndex { get; set; }
+        public string PlanProductConversionId { get; set; }
+        public string PlanProductConversionName { get; set; }
+        public Guid GoodsIssueIndex { get; set; }
+        public string GoodsIssueNo { get; set; }
+        public DateTime GoodsIssueDate { get; set; }
+        public int? GidocumentStatus { get; set; }
+        public Guid GoodsIssueItemLocationIndex { get; set; }
+        public Guid? TagItemIndex { get; set; }
+        public Guid? TagIndex { get; set; }
+        public string TagNo { get; set; }
+        public string ProductLot { get; set; }
+        public Guid? GilitemStatusIndex { get; set; }
+        public string GilitemStatusId { get; set; }
+        public string GilitemStatusName { get; set; }
+        public Guid? LocationIndex { get; set; }
+        public string LocationId { get; set; }
+        public string LocationName { get; set; }
+        public decimal Giqty { get; set; }
+        public decimal Giratio { get; set; }
+        public decimal GitotalQty { get; set; }
+        public Guid GiproductConversionIndex { get; set; }
+        public string GiproductConversionId { get; set; }
+        public string GiproductConversionName { get; set; }
+        public decimal? PickingQty { get; set; }
+        public decimal? PickingRatio { get; set; }
+        public decimal? PickingTotalQty { get; set; }
+        public DateTime? PickingDate { get; set; }
+        public string PickingBy { get; set; }
+        public DateTime? MfgDate { get; set; }
+        public DateTime? ExpDate { get; set; }
+        public string Udf1 { get; set; }
+        public string Udf2 { get; set; }
+        public string Udf3 { get; set; }
+        public string Udf4 { get; set; }
+        public string Udf5 { get; set; }
+        public decimal? UnitWeight { get; set; }
+        public decimal? UnitWidth { get; set; }
+        public decimal? UnitLength { get; set; }
+        public decimal? UnitHeight { get; set; }
+        public decimal? UnitVolume { get; set; }
+        public decimal? UnitPrice { get; set; }
+        public int? GildocumentStatus { get; set; }
+        public Guid TaskItemIndex { get; set; }
+        public Guid TaskIndex { get; set; }
+        public string TaskNo { get; set; }
+        public int? TaskIdocumentStatus { get; set; }
+        public decimal? TaskQty { get; set; }
+        public decimal? TaskRatio { get; set; }
+        public decimal? TaskTotalQty { get; set; }
+        public decimal? TaskWeight { get; set; }
+        public decimal? TaskVolume { get; set; }
+        public decimal? TaskPrice { get; set; }
+        public string TagOutPickNo { get; set; }
+        public Guid? TagOutPickIndex { get; set; }
+    }
+}

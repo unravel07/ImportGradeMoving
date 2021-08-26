@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OmniWMS.Infrastructure", "..\..\OmniWMS.Infrastructure\OmniWMS.Infrastructure.csproj", "{D4803EA0-B014-4D6E-9447-7BAB09CA4E9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportGradeMoving", "ImportGradeMoving\ImportGradeMoving.csproj", "{68EF1E77-5DD5-4373-9E81-67E59ACA5DBB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Imports", "Imports", "{81AA2E9E-41AB-41E3-A4AC-CC309DEAE02F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exports", "Exports", "{DFE8533F-0B82-4271-8A55-76178D13EE5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4803EA0-B014-4D6E-9447-7BAB09CA4E9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4803EA0-B014-4D6E-9447-7BAB09CA4E9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4803EA0-B014-4D6E-9447-7BAB09CA4E9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4803EA0-B014-4D6E-9447-7BAB09CA4E9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68EF1E77-5DD5-4373-9E81-67E59ACA5DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68EF1E77-5DD5-4373-9E81-67E59ACA5DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68EF1E77-5DD5-4373-9E81-67E59ACA5DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68EF1E77-5DD5-4373-9E81-67E59ACA5DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{68EF1E77-5DD5-4373-9E81-67E59ACA5DBB} = {81AA2E9E-41AB-41E3-A4AC-CC309DEAE02F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {904096BC-F3E9-4083-A0DA-3B5A0AA49130}
+	EndGlobalSection
+EndGlobal

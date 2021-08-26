@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ImportGradeMoving/ImportGradeMoving/.vs/ImportExportWindowsApp/v16
+/.vs
+/ImportGradeMoving/ImportGradeMoving/.vs/ImportExportWindowsApp/DesignTimeBuild
+/ImportGradeMoving/ImportGradeMoving/ImportGradeMoving/bin/Debug/netcoreapp3.1
+/ImportGradeMoving/ImportGradeMoving/ImportGradeMoving/obj
+/Import_Transfer/.vs/ImportTransfer
+/Import_Transfer/ImportTransfer/obj
+/Import_OrderInbound
+/Import_Transfer
+/OmniWMS.Infrastructure/bin/Debug/netcoreapp3.1
+/OmniWMS.Infrastructure/obj
