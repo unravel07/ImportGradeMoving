@@ -20,13 +20,23 @@ namespace ImportGradeMoving.Events.EventHandlings
 
         public List<ShopeeImportManualTemplate> Handle(string gradeFrom, string gradeTo)
         {
-            var pullStockTemplate = new ShopeeImportManualTemplate();
+
             var listPullStockTemplate = new List<ShopeeImportManualTemplate>();
+            var orderTypeAgaint = "";
+            var orderType = "";
             List<ExwmsConfig> exwmsConfigs = _context.ExwmsConfig.Where(condition => condition.ConfigGroupKey == "shopee").ToList();
             var ProductId = exwmsConfigs.Where(condition => condition.ConfigIssue == "MINIMUM_MOVE_GRADE" && condition.ConfigKey == "product_id").Select(selector => selector.ConfigValue).ToList();
             var zone = _setting.Zone;
-            var orderTypeAgaint = _setting.OrderTypeA;
-            var orderType = _setting.OrderTypeSP;
+            if (gradeFrom == "A" && gradeTo == "SP")
+            {
+                orderTypeAgaint = _setting.OrderTypeA;
+                orderType = _setting.OrderTypeSP;
+            }
+            else
+            {
+                orderTypeAgaint = _setting.OrderTypeSP;
+                orderType = _setting.OrderTypeA;
+            }
             try
             {
 
@@ -66,21 +76,23 @@ namespace ImportGradeMoving.Events.EventHandlings
                     #region Qty on Order
                     var plangoodsissueOnorderDest = _context.ImPlanGoodsIssueItem
                             .Join(_context.ImPlanGoodsIssue, src => src.PlanGoodsIssueIndex, des => des.PlanGoodsIssueIndex, (src, des) => new { planGoodItem = src, planGood = des })
-                            .Where(condition => condition.planGoodItem.ProductId == productId && orderTypeAgaint.Contains(condition.planGood.DocumentTypeId) && condition.planGood.DocumentStatus < 3)
+                            .Where(condition => condition.planGoodItem.ProductId == productId && orderTypeAgaint.Contains(condition.planGood.DocumentTypeId) && condition.planGood.DocumentStatus < 3 && condition.planGoodItem.ItemStatusId == gradeFrom)
                             .Select(selector => selector.planGoodItem.TotalQty).Sum();//equation-3
+                    
                     var plangoodsissueOnorderSource = _context.ImPlanGoodsIssueItem
                         .Join(_context.ImPlanGoodsIssue, src => src.PlanGoodsIssueIndex, des => des.PlanGoodsIssueIndex, (src, des) => new { planGoodItem = src, planGood = des })
-                            .Where(condition => condition.planGoodItem.ProductId == productId && orderType.Contains(condition.planGood.DocumentTypeId) && condition.planGoodItem.DocumentStatus < 3)
+                            .Where(condition => condition.planGoodItem.ProductId == productId && orderType.Contains(condition.planGood.DocumentTypeId) && condition.planGoodItem.DocumentStatus < 3 && condition.planGoodItem.ItemStatusId == gradeTo)
                             .Select(selector => selector.planGoodItem.TotalQty).Sum();//equation-4
                     #endregion
 
                     decimal? gradeFromTotalAvail = sumBinbalanceSource - plangoodsissueOnorderSource;//equation-5 (2-4)
                     decimal? gradeToTotalAvail = sumBinbalanceDest - plangoodsissueOnorderDest;//equation-6 (1-3)
-                    var productName = _context.MsProduct.Where(condition => condition.ProductId == productId).Select(selector => selector.ProductName).ToString();
+                    var productName = _context.MsProduct.Where(condition => condition.ProductId == productId).Select(selector => selector.ProductName).FirstOrDefault();
 
                     //insert to excel 
+                    var pullStockTemplate = new ShopeeImportManualTemplate();
                     pullStockTemplate.product_id = productId;
-                    pullStockTemplate.product_name = productName;
+                    pullStockTemplate.product_name = (productName != null) ? productName : "";
                     pullStockTemplate.grade_from = gradeFrom;
                     pullStockTemplate.grade_to = gradeTo;
                     pullStockTemplate.from_avail_qty = sumBinbalanceSource;
